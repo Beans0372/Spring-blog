@@ -35,7 +35,7 @@ public class UserController {
 		//스프링에 들고 있는건 ResponseEntity<?>,return ResponseEntity<String>("1",HttpStatus.OK); OK를 컨트롤+클릭 
 		return new CommonRespDto<String>(result, "회원가입 결과 : "+result); //분기를 타서 1을 넣어야하는거 아닌가
 	}
-	
+
 	@PostMapping("/auth/loginProc")
 	public @ResponseBody CommonRespDto<?> loginProc(@RequestBody User user, HttpSession session){
 		User persistUser = userService.로그인(user);
