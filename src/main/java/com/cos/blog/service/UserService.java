@@ -19,6 +19,7 @@ public class UserService {
 		// try catch를 잡아두면 fail이 아니라 done으로 간다.
 		// try catch를 안 하고 fail 발생시켜도 상관은 없지만 지금은 done으로 가는 방식을 사용.
 		// 이것을 간단하게 처리할 수 있는 어노테이션이 있다. ->>???
+		user.setRole("ROLE_USER");
 		try {
 			userRepository.save(user);
 			return 1;
