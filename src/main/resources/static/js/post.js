@@ -7,6 +7,10 @@ let index = {
 			// 콜백 스택
 			this.save();
 		});
+
+		$("#btn-delete").on("click",()=>{
+			this.deleteById();
+		});
 	},
 
 	// 이렇게 설계하면 장점 : 버튼 리스너를 새로 만들고 밑에서 처리하면됨
@@ -40,6 +44,26 @@ let index = {
 		// JSON.stringify(자바스크립트오브젝트);
 		// 제이슨 스트링 => 자바스크립트 오브젝트
 		// JSON.parse(제이슨스트링);
+	},
+
+	deleteById : function() {
+		let data = {
+				id:$("#id").val()
+		};
+		// fetch쓰면 jquery안써도 됨
+		$.ajax({
+			//data를 날릴필요 없음.
+			type :"DELETE",
+			url: "/post/"+data.id,
+			dataType : "text"
+		}).done((resp)=>{
+			alert("글쓰기 삭제 성공");
+			location.href="/";
+			console.log(resp);
+		}).fail(function(error){
+			alert("글쓰기 삭제 실패");
+			console.log(error);
+		})
 	}
 }
 

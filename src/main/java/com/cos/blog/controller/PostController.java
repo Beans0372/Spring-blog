@@ -2,6 +2,7 @@ package com.cos.blog.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -49,5 +50,11 @@ public class PostController {
 		// USER랑 조인하기위해 DTO 생성
 		model.addAttribute("postDetailRespDto", postService.상세보기(id));
 		return "post/detail";
+	}
+
+	@DeleteMapping("/post/{id}")
+	public @ResponseBody CommonRespDto<?> deleteById(@PathVariable int id) {
+	postService.삭제하기(id);
+	return new CommonRespDto<String>(1, "삭제 결과 성공");
 	}
 }

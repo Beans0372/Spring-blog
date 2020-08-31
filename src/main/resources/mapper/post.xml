@@ -24,4 +24,9 @@
 		ON p.userId = u.id 
 		where p.id = #{id} 
 	</select>
+
+	<delete id="deleteById">
+		DELETE FROM post
+		WHERE id = #{id}
+	</delete>
 </mapper>

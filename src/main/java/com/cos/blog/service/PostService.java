@@ -30,4 +30,9 @@ public class PostService {
 	public PostDetailRespDto 상세보기(int id) {
 		return postRepository.findById(id);
 	}
+
+	@Transactional
+	public void 삭제하기(int id) {
+		postRepository.deleteById(id);
+	}
 }
