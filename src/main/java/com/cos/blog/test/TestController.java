@@ -7,19 +7,19 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
 
 	// 인증 필요
-	@GetMapping("/user/{id}")
+	@GetMapping("/test/user/{id}")
 	public String findUser() {
 		return "<h1>유저 찾기 페이지</h1>";
 	}
 	
 	// 인증 필요 없음
-	@GetMapping("/post/{id}")
+	@GetMapping("/test/post/{id}")
 	public String findPost() {
 		return "<h1>글 상세보기 페이지</h1>";
 	}
 		
 	// 인증 필요 + 관리자 권한 필요
-	@GetMapping("/admin")
+	@GetMapping("/test/admin")
 	public String admin() {
 		return "<h1>관리자 페이지</h1>";
 	}
