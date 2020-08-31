@@ -3,6 +3,7 @@ package com.cos.blog.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -38,5 +39,15 @@ public class PostController {
 		// model은 RequestDispatcher임 view까지 데이터를 끌고간다. -> 그러면 posts로 뿌리기만 하면됨
 		model.addAttribute("posts",postService.목록보기());
 		return "index";
+	}
+
+	// /post/안녕 => 오류 @PathVariable이 걸러준다.
+	// ?주소 -> 쿼리스트링
+	// post/{id} -> 파라매터를 받는 것
+	@GetMapping("/post/{id}")
+	public String getPost(@PathVariable int id, Model model) {
+		// USER랑 조인하기위해 DTO 생성
+		model.addAttribute("postDetailRespDto", postService.상세보기(id));
+		return "post/detail";
 	}
 }

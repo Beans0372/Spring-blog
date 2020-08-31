@@ -15,4 +15,13 @@
 		FROM post
 		ORDER BY id DESC
 	</select>
+	
+	<select id="findById"
+		resultType="com.cos.blog.controller.dto.PostDetailRespDto">
+		SELECT p.id, p.title, p.content, u.username 
+		FROM post p 
+		INNER JOIN user u 
+		ON p.userId = u.id 
+		where p.id = #{id} 
+	</select>
 </mapper>
