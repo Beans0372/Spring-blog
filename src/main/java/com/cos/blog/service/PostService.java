@@ -35,4 +35,9 @@ public class PostService {
 	public void 삭제하기(int id) {
 		postRepository.deleteById(id);
 	}
+
+	@Transactional
+	public void 수정하기(Post post) {
+		postRepository.update(post);
+	}
 }

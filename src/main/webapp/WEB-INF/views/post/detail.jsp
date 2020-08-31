@@ -20,7 +20,8 @@
 			</tr>
 		</tbody>
 	</table>
-	<button id="btn-update" class="btn btn-warning">수정</button>
+	<button id="btn-update" class="btn btn-primary">수정하기</button>
+	<button id="btn-update-mode" class="btn btn-warning">수정</button>
 	<button id="btn-delete" class="btn btn-danger">삭제</button>
 </div>
 

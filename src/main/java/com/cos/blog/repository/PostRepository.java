@@ -12,4 +12,5 @@ public interface PostRepository {
 	public List<Post> findAll();
 	public PostDetailRespDto findById(int id);
 	public void deleteById(int id);
+	public void update(Post post);
 }

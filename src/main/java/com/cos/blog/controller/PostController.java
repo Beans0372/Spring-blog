@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -56,5 +57,12 @@ public class PostController {
 	public @ResponseBody CommonRespDto<?> deleteById(@PathVariable int id) {
 	postService.삭제하기(id);
 	return new CommonRespDto<String>(1, "삭제 결과 성공");
+	}
+
+	@PutMapping("/post/{id}")
+	public @ResponseBody CommonRespDto<?> update(@RequestBody Post post) {
+		// 수정할 땐 data 넘김
+		postService.수정하기(post);
+		return new CommonRespDto<String>(1, "수정 결과 성공");
 	}
 }
