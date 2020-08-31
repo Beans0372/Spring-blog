@@ -16,7 +16,9 @@ public class WebConfig implements WebMvcConfigurer {
 		
 		// aop에 있는 인터셉터 등록 끝
 		registry.addInterceptor(new SessionInterceptor())
-		.addPathPatterns("/user/**");
+		.addPathPatterns("/user/**")
+		.addPathPatterns("/post/**")
+		.addPathPatterns("/post**");
 		
 		registry.addInterceptor(new RoleInterceptor())
 		.addPathPatterns("/admin/**");

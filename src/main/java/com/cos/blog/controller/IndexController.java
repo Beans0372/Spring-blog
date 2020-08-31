@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class IndexController {
 
 	@GetMapping({"","/"})
-	public String TestIndex() {
-		return "index";
+	public String index() {
+		return "redirect:/posts";
 	}
 	
 	// auth는 특이하게 여기서 처리함
