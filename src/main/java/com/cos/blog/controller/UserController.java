@@ -4,7 +4,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.ObjectUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -16,38 +16,47 @@ import com.cos.blog.service.UserService;
 @Controller
 public class UserController {
 
-	//ResponseBody는 응답을 html이 아니라 data로 하기 위해서
-	// RequestBody를 붙여야 JSON data로 받을 수 있다. 안 붙이면 x-www-form-urlencoded만 받을 수 있음
-	// Spring에서는 web.xml에서 필터링을 해야하는데 스프링 필터를 등록(기본적으로 필터링해야될것)해두면
-	// 스프링필터에 ip 등등 많은데 MessageConverter가 있다. key=vlaue만 파싱하려고 대기하고 있는데
-	// @RequestBody를 걸면 컨텍트 타입을 확인하고 JSON을 보면 MessageConverter로 change함
-	// (ex : Object Mapper=jackson) 자바오브젝트로 변경해 줌
-
 	@Autowired
 	private UserService userService;
 
 	@PostMapping("/auth/joinProc")
 	public @ResponseBody CommonRespDto<?> joinProc(@RequestBody User user) {
-		//?는 아직 정해지지 않음, 많이 씀
-		int result = userService.회원가입(user);
-		//ok가 아니라 응답 CommonRespDto 엔티티를 만들것이다.
-		//사실 스프링에 만들어져 있지만 이해를 돕기위해서 만들었음
-		//스프링에 들고 있는건 ResponseEntity<?>,return ResponseEntity<String>("1",HttpStatus.OK); OK를 컨트롤+클릭 
-		return new CommonRespDto<String>(result, "회원가입 결과 : "+result); //분기를 타서 1을 넣어야하는거 아닌가
+		// joinProc(User user) 로만 하면 post를 통해 key, value 쌍으로 넘겨진 x-www-form-urlencoded 타입 데이터만 처리 가능
+		// @RequestBody를 앞에 붙이면 메세지 컨버터 발동하여 json 타입으로 받고 처리 가능
+		// web.xml에 스프링 필터 .. 중에 MessageConverter  -> 기본적으로는 무조건 x-www-form-urlencoded 타입 데이터가 들어올 거라 생각하고 있음
+		// @RequestBody가 붙어 있으면(json 데이터가 들어오면) MessageConverter를 JsonConverter로 교체함
+
+		userService.회원가입(user);
+
+		return new CommonRespDto<String>(1, "회원가입 성공");	// 스프링에는 ResponseEntity라는 클래스를 미리 만들어 놓아서 이걸 사용하는 게 원칙임!
 	}
 
 	@PostMapping("/auth/loginProc")
-	public @ResponseBody CommonRespDto<?> loginProc(@RequestBody User user, HttpSession session){
+	public @ResponseBody CommonRespDto<?> loginProc(@RequestBody User user, HttpSession session) {	// session에 대한 DI는 자동으로 이루어짐
+		// MyBatis는 해당 아이디와 비밀번호로 일치하는 사용자가 있는 경우 User 타입 객체를 만들어 반환하고
+		// 일치하는 사용자가 없는 경우는 null 값을 반환하고 있음
 		User persistUser = userService.로그인(user);
-		
-		if(ObjectUtils.isEmpty(persistUser)) {
-			//못찾으면 null이 아니라 빈객체를 return 해주기 때문이다.
-			return new CommonRespDto<String>(-1, "로그인 결과 실패");
-		}else {
-			//세션 등록
-			//request를 통해서 session에 접근할수있는 통로를 가지고 있는것이다.
+
+		if (persistUser == null) {
+			System.out.println("persistUser == null");
+			return new CommonRespDto<String>(-1,"로그인 결과 실패");
+
+		} else {
+			System.out.println("persistUser != null");
+			// 세션등록 해야함
 			session.setAttribute("principal", persistUser);
-			return new CommonRespDto<String>(1, "로그인 결과 성공");
+			return new CommonRespDto<String>(1,"로그인 결과 성공");
 		}
+	}
+
+	@GetMapping("/user/update")
+	public String updateUserInfo() {
+		return "/user/updateForm";
+	}
+
+	@PostMapping("/user/updateProc")
+	public @ResponseBody CommonRespDto<?> updateUserInfoProc(@RequestBody User user) {
+		userService.회원정보수정(user);
+		return new CommonRespDto<String>(1, "회원정보 수정 성공");
 	}
 }

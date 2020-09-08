@@ -28,10 +28,16 @@ public class UserService {
 			return -1;
 		}
 	}
+
 	// readOnly = true가 필요한 이유
 	@Transactional(readOnly = true)
 	public User 로그인(User user) {
 		User persisUser = userRepository.login(user);
 		return persisUser;
+	}
+
+	@Transactional
+	public void 회원정보수정(User user) {
+		userRepository.update(user);
 	}
 }

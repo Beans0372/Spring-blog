@@ -8,9 +8,13 @@
 		INSERT INTO user(username, password, email, role ,createDate) 
 		VALUES(#{username}, #{password}, #{email}, #{role}, now())
 	</insert>
-	
+
 	<select id="login" resultType="com.cos.blog.model.User">
 		SELECT id, username, email, profile, role, createDate FROM user 
 		WHERE username=#{username} AND password = #{password}
 	</select>
+
+	<update id="update">
+		UPDATE user set password = #{password}, email = #{email} where username = #{username}
+	</update>
 </mapper>

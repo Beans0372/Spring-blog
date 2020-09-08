@@ -2,19 +2,23 @@ let index = {
 	// 변수는 let 쓰고 ,함수의 이름이 없어도 실행될수밖에 없는 영역에 ()=> 씀
 	init : function(){
 		// 이벤트를 바인딩한다.
-		
+
 		// 1. 리스너
 		$("#btn-save").on("click",()=>{
 			// 콜백 스택
 			this.save();
 		});
-		
+
 		// 2. 리스너
 		$("#btn-login").on("click",()=>{
 			this.login();
 		});
+
+		$("#btn-update").on("click", () => {
+			this.update();	// 위 함수를 Arrow Function으로 바꿈으로써 this가 index 객체 가리키도록 됨
+		});
 	},
-	
+
 	// 이렇게 설계하면 장점 : 버튼 리스너를 새로 만들고 밑에서 처리하면됨
 	save : function() {
 		let data = {
@@ -69,7 +73,7 @@ let index = {
 					alert("로그인 성공");
 					location.href="/";
 				}else{
-					alert("로그인 실패");
+					alert("로그인 실패! 아이디와 패스워드를 다시 입력하시오.");
 					console.log(resp);
 				}
 			}).fail(function(error){
@@ -77,6 +81,34 @@ let index = {
 				console.log(error);
 			})
 		},
+
+		update: function() {
+			let data = {
+					username: $("#username").val(),
+					password: $("#password").val(),
+					email: $("#email").val()
+			};
+
+			$.ajax({
+				type: "POST",
+				url: "/user/updateProc",
+				data: JSON.stringify(data),
+				contentType: "application/json; charset=utf-8",
+				dataType: "json"
+			})
+			.done(function(resp){
+				console.log("회원정보 수정 후 resp: ",resp);
+				if (resp.statusCode == 1) {
+					alert("회원정보 수정에 성공했습니다");
+					location.href="/";
+				} else {
+					alert("회원정보 수정 실패네요");
+				}
+			})
+			.fail(function(error){
+				alert("회원정보 수정 실패입니다", error);
+			});
+		}
 }
 
 index.init();

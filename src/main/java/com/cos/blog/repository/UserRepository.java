@@ -8,6 +8,7 @@ public interface UserRepository {
 	// 퍼시스턴스를 만들어 줌
 	public void save(User user);
 	public User login(User user);
+	public void update(User user);
 
 	// 내부적으로 구현되어있다.
 }
